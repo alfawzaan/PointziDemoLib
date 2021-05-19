@@ -1,6 +1,7 @@
 package com.fawzaan.demofablib
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
@@ -55,13 +56,9 @@ class CustomFab : FloatingActionButton, View.OnClickListener {
 
         fun initialize(appCompatActivity: AppCompatActivity): CustomFab {
             this.appCompatActivity = appCompatActivity
-            val date: Date = Calendar.getInstance().time
-            val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-            currentDate = dateFormat.format(date)
-            val timeFormat = SimpleDateFormat("hh:mm:ss", Locale.getDefault())
-            currentTime = timeFormat.format(date)
-
-
+            val sharedPreferences =
+                this.appCompatActivity.getSharedPreferences(PREF_NAME_TAG, Context.MODE_PRIVATE)
+            setInitialLaunch(sharedPreferences)
             return CustomFab(this.appCompatActivity)
         }
 
@@ -70,20 +67,33 @@ class CustomFab : FloatingActionButton, View.OnClickListener {
                 this.appCompatActivity.getSharedPreferences(PREF_NAME_TAG, Context.MODE_PRIVATE)
             val isFirstLaunch = sharedPreferences.getBoolean(FIRST_LAUNCH_TAG, true)
             return if (isFirstLaunch) {
-                sharedPreferences.edit()
-                    .putString(INSTALLED_DATE_TAG, currentDate)
-                    .putBoolean(FIRST_LAUNCH_TAG, false)
-                    .apply()
+                setInitialLaunch(sharedPreferences)
                 currentDate
             } else {
                 sharedPreferences.getString(INSTALLED_DATE_TAG, currentDate)!!
             }
         }
+
+        fun setInitialLaunch(sharedPreferences: SharedPreferences) {
+            sharedPreferences.edit()
+                .putString(INSTALLED_DATE_TAG, currentDate)
+                .putBoolean(FIRST_LAUNCH_TAG, false)
+                .apply()
+        }
     }
 
 
+    fun setInfo() {
+        val date: Date = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        currentDate = dateFormat.format(date)
+        val timeFormat = SimpleDateFormat("hh:mm:ss", Locale.getDefault())
+        currentTime = timeFormat.format(date)
+    }
+
     override fun onClick(v: View?) {
-        Toast.makeText(this.mContext, "Hello World", Toast.LENGTH_LONG).show()
+        setInfo()
+//        Toast.makeText(this.mContext, "Hello World", Toast.LENGTH_LONG).show()
         val fragmentManager = appCompatActivity.supportFragmentManager
         val customModal = CustomModal()
         val bundle = Bundle()
