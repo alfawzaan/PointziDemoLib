@@ -82,7 +82,6 @@ class CustomFab : FloatingActionButton, View.OnClickListener {
         }
     }
 
-
     fun setInfo() {
         val date: Date = Calendar.getInstance().time
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
