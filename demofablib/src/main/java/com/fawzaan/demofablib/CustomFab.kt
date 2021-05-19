@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -56,6 +57,7 @@ class CustomFab : FloatingActionButton, View.OnClickListener {
 
         fun initialize(appCompatActivity: AppCompatActivity): CustomFab {
             this.appCompatActivity = appCompatActivity
+            setInfo()
             val sharedPreferences =
                 this.appCompatActivity.getSharedPreferences(PREF_NAME_TAG, Context.MODE_PRIVATE)
             setInitialLaunch(sharedPreferences)
@@ -74,6 +76,14 @@ class CustomFab : FloatingActionButton, View.OnClickListener {
             }
         }
 
+        fun setInfo() {
+            val date: Date = Calendar.getInstance().time
+            val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+            currentDate = dateFormat.format(date)
+            val timeFormat = SimpleDateFormat("hh:mm:ss", Locale.getDefault())
+            currentTime = timeFormat.format(date)
+        }
+
         fun setInitialLaunch(sharedPreferences: SharedPreferences) {
             sharedPreferences.edit()
                 .putString(INSTALLED_DATE_TAG, currentDate)
@@ -82,17 +92,11 @@ class CustomFab : FloatingActionButton, View.OnClickListener {
         }
     }
 
-    fun setInfo() {
-        val date: Date = Calendar.getInstance().time
-        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-        currentDate = dateFormat.format(date)
-        val timeFormat = SimpleDateFormat("hh:mm:ss", Locale.getDefault())
-        currentTime = timeFormat.format(date)
-    }
+
 
     override fun onClick(v: View?) {
         setInfo()
-//        Toast.makeText(this.mContext, "Hello World", Toast.LENGTH_LONG).show()
+        Log.i("Hello World", "Messae ${getInstalledDate()}")
         val fragmentManager = appCompatActivity.supportFragmentManager
         val customModal = CustomModal()
         val bundle = Bundle()

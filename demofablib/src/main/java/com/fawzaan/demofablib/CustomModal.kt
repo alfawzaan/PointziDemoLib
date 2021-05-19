@@ -2,6 +2,7 @@ package com.fawzaan.demofablib
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,5 +46,6 @@ class CustomModal : DialogFragment() {
         date = arguments?.getString(CustomFab.DATE_BUNDLE_TAG)!!
         time = arguments?.getString(CustomFab.TIME_BUNDLE_TAG)!!
         installed = arguments?.getString(CustomFab.INSTALLED_BUNDLE_TAG)!!
+        Log.i("INSTALLED", "Hello $installed")
     }
 }
