@@ -1,0 +1,3 @@
+include ':demofablib'
+include ':app'
+rootProject.name = "PointziDemoLib"
